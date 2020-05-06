@@ -1,0 +1,407 @@
+.datepicker {
+  position: relative;
+  text-align: left;
+}
+
+.datepicker * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.datepickerinput {
+  position: relative;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+}
+
+.datepickerinput input {
+  width: 175px;
+  padding: 6.5px 10px;
+  border-radius: 10px;
+  border: 1px solid #616161;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.datepickerinput .svg-icon {
+  position: absolute;
+  right: -1.5em;
+  width: 0.75em;
+  height: 0.75em;
+  cursor: pointer;
+  -webkit-transition: right 0.5s ease;
+  transition: right 0.5s ease;
+}
+
+.datepickerinput .svg-icon.showClear {
+  right: 0.3em !important;
+}
+
+.datepickerinput .svg-icon path {
+  fill: #4b4b4b;
+}
+
+.calendar {
+  position: absolute;
+  z-index: 50;
+  background-color: white;
+  width: 260px;
+  border: 0.5px solid #c9c9c9;
+}
+
+.calendar .info {
+  width: calc(100% + 1px);
+  padding: 10px 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: black;
+  color: white;
+}
+
+.calendar .info .year {
+  font-size: 1rem;
+  color: #a7a7a7;
+}
+
+.calendar .info .dayMonth {
+  font-size: 1.4rem;
+}
+
+.calendar .calWrapper {
+  padding: 5px 5px;
+}
+
+.calendar header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  line-height: 25px;
+}
+
+.calendar header span {
+  text-align: center;
+  width: calc(100% - ((100% / 7) * 2));
+  float: left;
+  font-size: 0.8rem;
+}
+
+.calendar header span.prev {
+  cursor: pointer;
+  content: url(../img/arrowUp.svg);
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+  width: 10px;
+  height: 10px;
+}
+
+.calendar header span.next {
+  cursor: pointer;
+  content: url(../img/arrowUp.svg);
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  width: 10px;
+  height: 10px;
+}
+
+.calendar header span .prev:not(.disabled),
+.calendar header span .next:not(.disabled),
+.calendar header span .up:not(.disabled) {
+  cursor: pointer;
+}
+
+.calendar header span .prev:not(.disabled):hover,
+.calendar header span .next:not(.disabled):hover,
+.calendar header span .up:not(.disabled):hover {
+  background: #353535;
+}
+
+.calendar footer {
+  width: calc(100% + 1px);
+}
+
+.calendar .col {
+  display: inline-block;
+  margin: 1px;
+  padding: 0 5px;
+  width: 33px;
+  height: 33px;
+  line-height: 33px;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.calendar .col.cal-day {
+  border-radius: 50px;
+  font-size: 13px;
+}
+
+.calendar .col.cal-day:hover {
+  border: 1px solid #272727;
+}
+
+.calendar .col.selected {
+  background-color: #272727;
+  color: white;
+}
+
+.calendar .col.cal-day-header {
+  font-size: 75%;
+  white-space: nowrap;
+  cursor: inherit;
+}
+
+.calendar .col.cal-day-header:hover {
+  background-color: inherit;
+}
+
+.calendar .col.cal-day-last, .calendar .col.cal-day-next {
+  color: #979797;
+  border: none !important;
+}
+
+footer {
+  padding: 5px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: black;
+}
+
+footer .toTimePicker,
+footer .toCalendar {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
+footer .toTimePicker {
+  content: url(../img/clock.svg);
+}
+
+footer .toCalendar {
+  content: url(../img/calendar.svg);
+}
+
+.timePicker {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  z-index: 50;
+  width: 250px;
+  border: 0.5px solid #2e2e2e;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  background-color: #272727;
+}
+
+.timePicker footer {
+  width: calc(100% + 1px);
+}
+
+.timePicker .info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 70px;
+  width: calc(100% + 1px);
+  background-color: black;
+  color: white;
+}
+
+.timePicker .info span {
+  font-size: 3rem;
+}
+
+.timePicker .info .hour,
+.timePicker .info .minute {
+  cursor: pointer;
+  padding: 0 2px;
+  color: #9e9e9e;
+}
+
+.timePicker .info .hour:hover,
+.timePicker .info .minute:hover {
+  background-color: rgba(255, 255, 255, 0.199);
+  border-radius: 10px;
+}
+
+.timePicker .info .ampm {
+  position: relative;
+  top: 10px;
+  left: 5px;
+  width: 30px;
+  padding: 1.5px;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  cursor: pointer;
+  color: white;
+}
+
+.timePicker .info .ampm:hover {
+  background-color: rgba(255, 255, 255, 0.199);
+}
+
+.timePicker .info .ampm .ap {
+  font-size: 1rem;
+  margin: 0 2.5px;
+}
+
+.timePicker .info .active {
+  color: white;
+}
+
+.timePicker .clockWatch {
+  width: 225px;
+  height: 225px;
+  background-color: #747474;
+  border-radius: 50%;
+  margin: 20px 0;
+  margin-bottom: 10px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+}
+
+.timePicker .clockWatch .time-picker-hour {
+  width: 30px;
+  height: 30px;
+  left: -17px;
+  position: absolute;
+  top: -110px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 30px;
+  margin: 0;
+  color: white;
+}
+
+.timePicker .clockWatch .time-picker-hour.selected {
+  pointer-events: auto !important;
+}
+
+.timePicker .clockWatch .time-picker-hour.disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.timePicker .clockWatch #time-picker-hour-center {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: black;
+  position: relative;
+  opacity: 0.9;
+}
+
+.timePicker .clockWatch #time-picker-hour-hand {
+  width: 2px;
+  height: 170px;
+  position: absolute;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, #00000000), color-stop(50%, rgba(0, 0, 0, 0.575)), color-stop(97.5%, rgba(0, 0, 0, 0.575)), color-stop(97.5%, rgba(0, 0, 0, 0)));
+  background: linear-gradient(to top, #00000000 50%, rgba(0, 0, 0, 0.575) 50%, rgba(0, 0, 0, 0.575) 97.5%, rgba(0, 0, 0, 0) 97.5%);
+}
+
+.timePicker .clockWatch .time-picker-current {
+  position: relative;
+  left: -3px;
+}
+
+.timePicker .clockWatch #time-picker-current-box {
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.575);
+  left: calc(50% - 15px);
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: -110px;
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 30px;
+  z-index: 0;
+}
+
+.timePicker .bottom {
+  color: #46acff;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  padding: 10px 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.timePicker .bottom span {
+  cursor: pointer;
+  padding: 0 5px;
+  border-radius: 15px;
+  margin: 5px;
+}
+/*# sourceMappingURL=style.css.map */
