@@ -4,6 +4,7 @@
     <div>
       <datepicker
         inputClass="test"
+        :editable="true"
         v-on:selected="getDate"
         v-on:cleared="getDate"
       ></datepicker>

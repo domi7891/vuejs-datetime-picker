@@ -1,6 +1,7 @@
 <template>
   <div class="datepicker" :class="wrapperClass">
     <datepickerinput
+      ref="input"
       :selectedValue="selectedDate"
       :format="format"
       :id="id"
@@ -56,7 +57,7 @@ export default {
   },
   props: {
     name: String,
-    format: { type: [String, Function], default: 'D dd MMM yyyy HH:mm' },
+    format: { type: [String, Function], default: 'dd/MM/yyyy HH:mm a' },
     id: String,
     refName: String,
     placeholder: {
@@ -84,7 +85,8 @@ export default {
   data() {
     const cal = Calendar
     const utils = createUtils(this.isUTCisUTC)
-    const curr = utils.setDayOfMonth(new Date(), 1)
+    const d = new Date()
+    const curr = utils.setDayOfMonth(d, 1)
     return {
       selectedDate: null,
       firstTimestamp: curr,
@@ -133,6 +135,7 @@ export default {
 
     selectTime(date) {
       this.setDate(date)
+      this.$refs.input.removeInputFocus()
       this.$emit('selected', this.selectedDate)
     },
 
@@ -157,8 +160,11 @@ export default {
     },
 
     showDayPicker() {
+      const d = new Date()
+      this.utils.setHours(d, 0)
+      this.utils.setMinutes(d, 0)
       this.close()
-      this.selectedDate = this.selectedDate || new Date()
+      this.selectedDate = this.selectedDate || d
       this.showDay = true
       return true
     },

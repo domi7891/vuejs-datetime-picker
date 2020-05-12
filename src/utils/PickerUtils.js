@@ -105,13 +105,17 @@ const utils = {
       .replace(/d/, day)
       .replace(/MMMM/, this.getNameOfMonth(month))
       .replace(/MMM/, this.getShortNameOfMonth(month))
-      .replace(/MM/, ('0' + month + 1).slice(-2))
+      .replace(/MM/, ('0' + (month + 1)).slice(-2))
       .replace(/M(?!a|ä|e)/, month + 1)
       .replace(/yyyy/, year)
       .replace(/yy/, String(year).slice(2))
       .replace(/D/, this.getShortNameOfDay(this.getWeekday(date)))
-      .replace(/HH/, ('0' + hour).slice(-2))
+      .replace(
+        /HH/,
+        ('0' + (hour > 12 ? hour - 12 : hour > 0 ? hour : 12)).slice(-2)
+      )
       .replace(/mm/, ('0' + minute).slice(-2))
+      .replace(/a/, hour > 12 || hour == 0 ? 'PM' : 'AM')
   },
 
   countDaysOfMonth(month, year) {

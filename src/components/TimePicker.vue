@@ -99,11 +99,15 @@ export default {
   data() {
     const utils = createUtils(this.isUTC)
     return {
-      hour: { val: 12, deg: 0 },
+      hour: {
+        val: 12,
+        deg: 0,
+      },
       minute: { val: 0, deg: 0 },
-      ampm: 'am',
+      ampm: 'pm',
       which: 'hour',
       utils: utils,
+      didDrag: false,
     }
   },
 
@@ -138,6 +142,7 @@ export default {
 
   mounted() {
     this.dragElement(this.$el.querySelector('p.selected'))
+    // console.log(this.selectedDate)
   },
 
   updated() {
@@ -174,7 +179,14 @@ export default {
     },
 
     selectMinute(minute) {
-      console.log(minute.val)
+      if (
+        this.drag &&
+        this.$el.querySelector('.selected').innerHTML == minute.val - 1 &&
+        minute.val % 5 == 0
+      ) {
+        this.drag = false
+        return
+      }
       this.minute.val = minute.val
       this.minute.deg = minute.degree
       this.$el.querySelector('#time-picker-hour-hand').style.transform =
@@ -247,7 +259,7 @@ export default {
         let h = Math.sqrt(Math.pow(pos3, 2) + Math.pow(pos4, 2))
         let cos = pos3 / h
 
-        deg = getDeg(Math.round(tan / 30) * 30, cos)
+        deg = vue.getDeg(Math.round(tan / 30) * 30, cos)
 
         vue.hour.val = hourDegs.indexOf(deg) + 1
         vue.hour.deg = deg
@@ -259,6 +271,7 @@ export default {
       }
 
       function elementMinuteDrag(e) {
+        vue.drag = true
         e = e || window.event
         e.preventDefault()
 
@@ -275,7 +288,7 @@ export default {
         let h = Math.sqrt(Math.pow(pos3, 2) + Math.pow(pos4, 2))
         let cos = pos3 / h
 
-        deg = getDeg(Math.round(tan / 6) * 6, cos)
+        deg = vue.getDeg(Math.round(tan / 6) * 6, cos)
 
         vue.minute.val =
           minuteDegs.indexOf(deg) + 1 == 60 ? 0 : minuteDegs.indexOf(deg) + 1
@@ -287,77 +300,78 @@ export default {
           'rotate(' + deg + 'deg)'
       }
 
-      function getDeg(deg, cos) {
-        if (deg == 90 && cos > 0) return 0
-        if (deg == 84 && cos > 0) return 6
-        if (deg == 78 && cos > 0) return 12
-        if (deg == 72 && cos > 0) return 18
-        if (deg == 66 && cos > 0) return 24
-        if (deg == 60 && cos > 0) return 30
-        if (deg == 54 && cos > 0) return 36
-        if (deg == 48 && cos > 0) return 42
-        if (deg == 42 && cos > 0) return 48
-        if (deg == 36 && cos > 0) return 54
-        if (deg == 30 && cos > 0) return 60
-        if (deg == 24 && cos > 0) return 66
-        if (deg == 18 && cos > 0) return 72
-        if (deg == 12 && cos > 0) return 78
-        if (deg == 6 && cos > 0) return 84
-        if (deg == 0 && cos > 0) return 90
-        if (deg == -6 && cos > 0) return 96
-        if (deg == -12 && cos > 0) return 102
-        if (deg == -18 && cos > 0) return 108
-        if (deg == -24 && cos > 0) return 114
-        if (deg == -30 && cos > 0) return 120
-        if (deg == -36 && cos > 0) return 126
-        if (deg == -42 && cos > 0) return 132
-        if (deg == -48 && cos > 0) return 138
-        if (deg == -54 && cos > 0) return 144
-        if (deg == -60 && cos > 0) return 150
-        if (deg == -66 && cos > 0) return 156
-        if (deg == -72 && cos > 0) return 162
-        if (deg == -78 && cos > 0) return 168
-        if (deg == -84 && cos > 0) return 174
-        if (deg == -90 && cos > 0) return 180
-        if (deg == 90 && cos < 0) return 180
-        if (deg == 84 && cos < 0) return 186
-        if (deg == 78 && cos < 0) return 192
-        if (deg == 72 && cos < 0) return 198
-        if (deg == 66 && cos < 0) return 204
-        if (deg == 60 && cos < 0) return 210
-        if (deg == 54 && cos < 0) return 216
-        if (deg == 48 && cos < 0) return 222
-        if (deg == 42 && cos < 0) return 228
-        if (deg == 36 && cos < 0) return 234
-        if (deg == 30 && cos < 0) return 240
-        if (deg == 24 && cos < 0) return 246
-        if (deg == 18 && cos < 0) return 252
-        if (deg == 12 && cos < 0) return 258
-        if (deg == 6 && cos < 0) return 264
-        if (deg == 0 && cos < 0) return 270
-        if (deg == -6 && cos < 0) return 276
-        if (deg == -12 && cos < 0) return 282
-        if (deg == -18 && cos < 0) return 288
-        if (deg == -24 && cos < 0) return 294
-        if (deg == -30 && cos < 0) return 300
-        if (deg == -36 && cos < 0) return 306
-        if (deg == -42 && cos < 0) return 312
-        if (deg == -48 && cos < 0) return 318
-        if (deg == -54 && cos < 0) return 324
-        if (deg == -60 && cos < 0) return 330
-        if (deg == -66 && cos < 0) return 336
-        if (deg == -72 && cos < 0) return 342
-        if (deg == -78 && cos < 0) return 348
-        if (deg == -84 && cos < 0) return 354
-        if (deg == -90 && cos < 0) return 0
-      }
-
-      function closeDragElement() {
+      function closeDragElement(e) {
+        e.preventDefault()
         document.onmouseup = null
         document.onmousemove = null
         vue.dragElement(vue.$el.querySelector('p.selected'))
         if (vue.which == 'hour') vue.switchState('minute')
+        return false
       }
+    },
+    getDeg(deg, cos) {
+      if (deg == 90 && cos > 0) return 0
+      if (deg == 84 && cos > 0) return 6
+      if (deg == 78 && cos > 0) return 12
+      if (deg == 72 && cos > 0) return 18
+      if (deg == 66 && cos > 0) return 24
+      if (deg == 60 && cos > 0) return 30
+      if (deg == 54 && cos > 0) return 36
+      if (deg == 48 && cos > 0) return 42
+      if (deg == 42 && cos > 0) return 48
+      if (deg == 36 && cos > 0) return 54
+      if (deg == 30 && cos > 0) return 60
+      if (deg == 24 && cos > 0) return 66
+      if (deg == 18 && cos > 0) return 72
+      if (deg == 12 && cos > 0) return 78
+      if (deg == 6 && cos > 0) return 84
+      if (deg == 0 && cos > 0) return 90
+      if (deg == -6 && cos > 0) return 96
+      if (deg == -12 && cos > 0) return 102
+      if (deg == -18 && cos > 0) return 108
+      if (deg == -24 && cos > 0) return 114
+      if (deg == -30 && cos > 0) return 120
+      if (deg == -36 && cos > 0) return 126
+      if (deg == -42 && cos > 0) return 132
+      if (deg == -48 && cos > 0) return 138
+      if (deg == -54 && cos > 0) return 144
+      if (deg == -60 && cos > 0) return 150
+      if (deg == -66 && cos > 0) return 156
+      if (deg == -72 && cos > 0) return 162
+      if (deg == -78 && cos > 0) return 168
+      if (deg == -84 && cos > 0) return 174
+      if (deg == -90 && cos > 0) return 180
+      if (deg == 90 && cos < 0) return 180
+      if (deg == 84 && cos < 0) return 186
+      if (deg == 78 && cos < 0) return 192
+      if (deg == 72 && cos < 0) return 198
+      if (deg == 66 && cos < 0) return 204
+      if (deg == 60 && cos < 0) return 210
+      if (deg == 54 && cos < 0) return 216
+      if (deg == 48 && cos < 0) return 222
+      if (deg == 42 && cos < 0) return 228
+      if (deg == 36 && cos < 0) return 234
+      if (deg == 30 && cos < 0) return 240
+      if (deg == 24 && cos < 0) return 246
+      if (deg == 18 && cos < 0) return 252
+      if (deg == 12 && cos < 0) return 258
+      if (deg == 6 && cos < 0) return 264
+      if (deg == 0 && cos < 0) return 270
+      if (deg == -6 && cos < 0) return 276
+      if (deg == -12 && cos < 0) return 282
+      if (deg == -18 && cos < 0) return 288
+      if (deg == -24 && cos < 0) return 294
+      if (deg == -30 && cos < 0) return 300
+      if (deg == -36 && cos < 0) return 306
+      if (deg == -42 && cos < 0) return 312
+      if (deg == -48 && cos < 0) return 318
+      if (deg == -54 && cos < 0) return 324
+      if (deg == -60 && cos < 0) return 330
+      if (deg == -66 && cos < 0) return 336
+      if (deg == -72 && cos < 0) return 342
+      if (deg == -78 && cos < 0) return 348
+      if (deg == -84 && cos < 0) return 354
+      if (deg == -90 && cos < 0) return 0
     },
   },
 }
