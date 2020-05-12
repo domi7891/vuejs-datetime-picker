@@ -44,6 +44,7 @@ export default {
     required: Boolean,
     editable: Boolean,
     isUTC: Boolean,
+    withTime: Boolean,
   },
   data() {
     const dateUtils = createUtils(this.isUTC)

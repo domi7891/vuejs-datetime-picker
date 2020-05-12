@@ -1,5 +1,5 @@
 <template>
-  <div class="datepicker">
+  <div class="datepicker" :class="wrapperClass">
     <datepickerinput
       :selectedValue="selectedDate"
       :format="format"
@@ -21,6 +21,7 @@
       :firstDate="firstDayOfView"
       :isUTC="isUTC"
       :selectedDate="selectedDate"
+      :customCalendarClass="calendarClass"
       @monthChanged="dayPickerChangedMonth"
       @selectDate="selectDate"
       @closePicker="close"
@@ -31,8 +32,10 @@
     <timepicker
       :showTimePicker="showTime"
       :selectedDate="selectedDate"
+      :customTimeClass="timeClass"
       @closePicker="close"
       @openCalendarPicker="showPicker"
+      @selectTime="selectTime"
     ></timepicker>
   </div>
 </template>
@@ -53,12 +56,17 @@ export default {
   },
   props: {
     name: String,
-    format: { type: [String, Function], default: 'D dd MMM yyyy' },
+    format: { type: [String, Function], default: 'D dd MMM yyyy HH:mm' },
     id: String,
     refName: String,
-    placeholder: String,
-    inputClass: String,
-    timeClass: String,
+    placeholder: {
+      type: String,
+      default: 'Pick Date-Time',
+    },
+    inputClass: [String, Array, Object],
+    timeClass: [String, Array, Object],
+    calendarClass: [String, Array, Object],
+    wrapperClass: [String, Array, Object],
     disabled: Boolean,
     required: Boolean,
     editable: Boolean,
@@ -84,7 +92,7 @@ export default {
       utils: utils,
       calendar: cal,
       showDay: false,
-      showTime: true,
+      showTime: false,
     }
   },
   watch: {
@@ -117,13 +125,19 @@ export default {
       const d = new Date(date)
       this.selectedDate = d
       this.setFirstDate(d)
-      this.$emit('selected', d)
     },
 
     selectDate(date) {
       this.setDate(date.timestamp)
     },
+
+    selectTime(date) {
+      this.setDate(date)
+      this.$emit('selected', this.selectedDate)
+    },
+
     showPicker() {
+      this.$emit('pickerOpened')
       this.setInitialPicker()
     },
 
@@ -163,6 +177,7 @@ export default {
 
     close() {
       this.showDay = this.showTime = false
+      this.$emit('pickerClosed')
     },
   },
 }

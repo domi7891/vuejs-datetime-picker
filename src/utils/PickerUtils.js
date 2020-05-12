@@ -97,6 +97,8 @@ const utils = {
     let day = this.getDayOfMonth(date)
     let month = this.getMonth(date)
     let year = this.getYear(date)
+    let hour = this.getHours(date)
+    let minute = this.getMinutes(date)
 
     return format
       .replace(/dd/, ('0' + day).slice(-2))
@@ -108,6 +110,8 @@ const utils = {
       .replace(/yyyy/, year)
       .replace(/yy/, String(year).slice(2))
       .replace(/D/, this.getShortNameOfDay(this.getWeekday(date)))
+      .replace(/HH/, ('0' + hour).slice(-2))
+      .replace(/mm/, ('0' + minute).slice(-2))
   },
 
   countDaysOfMonth(month, year) {

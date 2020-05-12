@@ -12,6 +12,7 @@
         class="hour"
         v-bind:class="which == 'hour' ? 'active' : ''"
         v-on:click="switchState('hour')"
+        v-on:blur="contentEditable = false"
         v-html="(hour.val < 10 ? '0' : '') + hour.val"
       ></span>
       <span class="spacer">:</span>
@@ -36,10 +37,7 @@
         <span id="time-picker-current-box"></span>
       </div>
 
-      <div
-        v-if="which == 'hour'"
-        style="position: relative; left: -2px; transform: rotate(1.5deg);"
-      >
+      <div v-if="which == 'hour'" style="position: relative;">
         <div
           v-for="h in hours"
           v-bind:key="h.val"
@@ -57,10 +55,7 @@
           </p>
         </div>
       </div>
-      <div
-        v-if="which == 'minute'"
-        style="position: relative; left: -2px; transform: rotate(1.5deg);"
-      >
+      <div v-if="which == 'minute'" style="position: relative;">
         <div
           v-for="m in minutes"
           v-bind:key="m.val"
@@ -73,7 +68,9 @@
             v-bind:class="{ selected: m.val == minute.val, disabled: !m.show }"
             v-bind:style="{
               transform: 'rotate(-' + m.degree + 'deg)',
+              pointerEvent: 'none',
             }"
+            v-on:click="m.val % 5 == 0 ? selectMinute(m) : ''"
           >
             {{ m.val }}
           </p>
@@ -81,13 +78,15 @@
       </div>
     </div>
     <div class="bottom">
-      <span>CANCLE</span>
-      <span>OK</span>
+      <span v-on:click="cancle">CANCLE</span>
+      <span v-on:click="save">OK</span>
     </div>
   </div>
 </template>
 
 <script>
+import { createUtils } from '../utils/PickerUtils'
+
 const hourDegs = [30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 0]
 const minuteDegs = []
 
@@ -98,11 +97,13 @@ export default {
     selectedDate: Date,
   },
   data() {
+    const utils = createUtils(this.isUTC)
     return {
       hour: { val: 12, deg: 0 },
       minute: { val: 0, deg: 0 },
       ampm: 'am',
       which: 'hour',
+      utils: utils,
     }
   },
 
@@ -136,18 +137,19 @@ export default {
   },
 
   mounted() {
-    this.dragElement(this.$el.querySelector('.selected'))
+    this.dragElement(this.$el.querySelector('p.selected'))
   },
 
   updated() {
-    this.dragElement(document.querySelector('.selected'))
+    this.dragElement(document.querySelector('p.selected'))
   },
 
   methods: {
     switchState(state) {
+      if (this.which == state) return
       this.which = state
       this.clearCurrent()
-      this.$el.querySelector('.selected').classList.remove('selected')
+      this.$el.querySelector('p.selected').classList.remove('selected')
     },
 
     switchAP() {
@@ -166,21 +168,22 @@ export default {
         'rotate(' + hour.degree + 'deg)'
       this.$el.querySelector('.time-picker-current').style.transform =
         'rotate(' + hour.degree + 'deg)'
-      this.toggleSelected(hour)
-      this.dragElement(document.querySelector('.selected'))
+      this.dragElement(document.querySelector('p.selected'))
+      if (this.which == 'hour') this.switchState('minute')
       return true
     },
 
-    toggleSelected(hour) {
-      this.$el.querySelector('.selected').classList.remove('selected')
-      this.$el
-        .querySelector('#time-picker-hour-' + hour.val)
-        .classList.add('selected')
+    selectMinute(minute) {
+      console.log(minute.val)
+      this.minute.val = minute.val
+      this.minute.deg = minute.degree
+      this.$el.querySelector('#time-picker-hour-hand').style.transform =
+        'rotate(' + minute.degree + 'deg)'
+      this.$el.querySelector('.time-picker-current').style.transform =
+        'rotate(' + minute.degree + 'deg)'
     },
 
     clearCurrent() {
-      let selected = this.$el.querySelector('.selected').dataset.vDeg
-      console.log(selected)
       this.$el.querySelector('#time-picker-hour-hand').style.transform =
         'rotate(' +
         (this.which == 'hour' ? this.hour.deg : this.minute.deg) +
@@ -189,6 +192,24 @@ export default {
         'rotate(' +
         (this.which == 'hour' ? this.hour.deg : this.minute.deg) +
         'deg)'
+      this.$el
+        .querySelectorAll('p[id^="time-picker-hour-"]')
+        .forEach(e => (e.style.pointerEvent = 'none'))
+      this.$el.querySelector('p.selected').style.pointerEvent = 'auto'
+    },
+
+    save() {
+      this.utils.setHours(
+        this.selectedDate,
+        this.ampm == 'pm' ? this.hour.val + 12 : this.hour.val
+      )
+      this.utils.setMinutes(this.selectedDate, this.minute.val)
+      this.$emit('selectTime', this.selectedDate)
+      this.cancle()
+    },
+
+    cancle() {
+      this.$emit('closePicker')
     },
 
     dragElement(elmnt) {
@@ -235,8 +256,6 @@ export default {
           'rotate(' + deg + 'deg)'
         vue.$el.querySelector('.time-picker-current').style.transform =
           'rotate(' + deg + 'deg)'
-
-        toggleSelected(hourDegs.indexOf(deg) + 1)
       }
 
       function elementMinuteDrag(e) {
@@ -266,8 +285,6 @@ export default {
           'rotate(' + deg + 'deg)'
         vue.$el.querySelector('.time-picker-current').style.transform =
           'rotate(' + deg + 'deg)'
-
-        toggleSelected(vue.minute.val)
       }
 
       function getDeg(deg, cos) {
@@ -335,40 +352,10 @@ export default {
         if (deg == -90 && cos < 0) return 0
       }
 
-      function toggleSelected(val) {
-        let selected = vue.$el.querySelector('.selected')
-        selected.onmousedown = null
-        selected.classList.remove('selected')
-        let next = parseInt(selected.innerHTML) + 1
-        if (vue.which == 'minute') {
-          next = next == 60 ? 0 : next
-          console.log(next)
-          vue.$el.querySelector(
-            '#time-picker-hour-' + next
-          ).style.pointerEvents = 'auto'
-        }
-        vue.$el
-          .querySelector('#time-picker-hour-' + val)
-          .classList.add('selected')
-        if (vue.which == 'minute') {
-          console.log(val)
-
-          next = val + 1
-          next = next == 60 ? 0 : next
-          vue.$el.querySelector(
-            '#time-picker-hour-' + next
-          ).style.pointerEvents = 'none'
-          let prev = val - 1 < 0 ? 59 : val - 1
-          vue.$el.querySelector(
-            '#time-picker-hour-' + prev
-          ).style.pointerEvents = 'none'
-        }
-      }
-
       function closeDragElement() {
         document.onmouseup = null
         document.onmousemove = null
-        vue.dragElement(vue.$el.querySelector('.selected'))
+        vue.dragElement(vue.$el.querySelector('p.selected'))
         if (vue.which == 'hour') vue.switchState('minute')
       }
     },

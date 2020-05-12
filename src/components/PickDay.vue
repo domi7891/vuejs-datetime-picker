@@ -10,11 +10,11 @@
     </div>
     <div class="calWrapper">
       <header>
-        <span class="prev" v-on:click="prev">&lt;</span>
+        <span class="prev" v-on:click="prev"></span>
         <span class="togglePickers"
           >{{ currentMonthName }} {{ currentYearName }}</span
         >
-        <span class="next" v-on:click="next">&gt;</span>
+        <span class="next" v-on:click="next"></span>
       </header>
       <div>
         <span
