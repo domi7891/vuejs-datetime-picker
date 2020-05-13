@@ -34,6 +34,7 @@
       :showTimePicker="showTime"
       :selectedDate="selectedDate"
       :customTimeClass="timeClass"
+      :timeButtons="timeButtons"
       @closePicker="close"
       @openCalendarPicker="showPicker"
       @selectTime="selectTime"
@@ -68,6 +69,7 @@ export default {
     timeClass: [String, Array, Object],
     calendarClass: [String, Array, Object],
     wrapperClass: [String, Array, Object],
+    timeButtons: { type: Boolean, default: false },
     disabled: Boolean,
     required: Boolean,
     editable: Boolean,
@@ -94,7 +96,7 @@ export default {
       utils: utils,
       calendar: cal,
       showDay: false,
-      showTime: false,
+      showTime: true,
     }
   },
   watch: {
@@ -133,9 +135,9 @@ export default {
       this.setDate(date.timestamp)
     },
 
-    selectTime(date) {
+    selectTime(date, close) {
       this.setDate(date)
-      this.$refs.input.removeInputFocus()
+      if (this.timeButtons && close) this.$refs.input.removeInputFocus()
       this.$emit('selected', this.selectedDate)
     },
 

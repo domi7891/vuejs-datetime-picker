@@ -77,9 +77,9 @@
         </div>
       </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" v-if="timeButtons">
       <span v-on:click="cancle">CANCLE</span>
-      <span v-on:click="save">OK</span>
+      <span v-on:click="saveAndClose">OK</span>
     </div>
   </div>
 </template>
@@ -95,6 +95,7 @@ export default {
     showTimePicker: Boolean,
     customTimeClass: String,
     selectedDate: Date,
+    timeButtons: Boolean,
   },
   data() {
     const utils = createUtils(this.isUTC)
@@ -142,7 +143,7 @@ export default {
 
   mounted() {
     this.dragElement(this.$el.querySelector('p.selected'))
-    // console.log(this.selectedDate)
+    console.log('mount')
   },
 
   updated() {
@@ -154,11 +155,13 @@ export default {
       if (this.which == state) return
       this.which = state
       this.clearCurrent()
+      this.setDraggable()
       this.$el.querySelector('p.selected').classList.remove('selected')
     },
 
     switchAP() {
       this.ampm = this.ampm == 'am' ? 'pm' : 'am'
+      if (!this.timeButtons) this.save(false)
     },
 
     toCalendar() {
@@ -166,25 +169,47 @@ export default {
       this.$emit('openCalendarPicker')
     },
 
+    setDraggable() {
+      this.dragElement(document.querySelector('p.selected'))
+    },
+
+    removeDraggable(val) {
+      this.$el.querySelector('#time-picker-hour-' + val).onmousedown = null
+    },
+
+    removeSelected() {
+      this.$el.querySelector('p.selected').classList.remove('selected')
+    },
+
+    addSelected(val) {
+      this.$el
+        .querySelector('#time-picker-hour-' + val)
+        .classList.add('selected')
+    },
+
     selectHour(hour) {
+      this.removeDraggable(this.hour.val)
       this.hour.val = hour.val
       this.hour.deg = hour.degree
       this.$el.querySelector('#time-picker-hour-hand').style.transform =
         'rotate(' + hour.degree + 'deg)'
       this.$el.querySelector('.time-picker-current').style.transform =
         'rotate(' + hour.degree + 'deg)'
+      this.removeSelected()
+      this.addSelected(hour.val)
       this.dragElement(document.querySelector('p.selected'))
-      if (this.which == 'hour') this.switchState('minute')
+      if (!this.timeButtons) this.save(false)
       return true
     },
 
     selectMinute(minute) {
+      this.removeDraggable(this.hour.val)
       if (
-        this.drag &&
+        this.didDrag &&
         this.$el.querySelector('.selected').innerHTML == minute.val - 1 &&
         minute.val % 5 == 0
       ) {
-        this.drag = false
+        this.didDrag = false
         return
       }
       this.minute.val = minute.val
@@ -193,6 +218,11 @@ export default {
         'rotate(' + minute.degree + 'deg)'
       this.$el.querySelector('.time-picker-current').style.transform =
         'rotate(' + minute.degree + 'deg)'
+      this.removeSelected()
+      this.addSelected(minute.val)
+      this.dragElement(document.querySelector('p.selected'))
+      if (!this.timeButtons) this.save(false)
+      return true
     },
 
     clearCurrent() {
@@ -209,14 +239,17 @@ export default {
         .forEach(e => (e.style.pointerEvent = 'none'))
       this.$el.querySelector('p.selected').style.pointerEvent = 'auto'
     },
-
-    save() {
-      this.utils.setHours(
-        this.selectedDate,
-        this.ampm == 'pm' ? this.hour.val + 12 : this.hour.val
-      )
+    save(close) {
+      let newHours = this.ampm == 'pm' ? this.hour.val + 12 : this.hour.val
+      newHours = newHours == 24 ? 0 : newHours
+      this.utils.setHours(this.selectedDate, newHours)
       this.utils.setMinutes(this.selectedDate, this.minute.val)
-      this.$emit('selectTime', this.selectedDate)
+      this.$emit('selectTime', this.selectedDate, close)
+    },
+
+    saveAndClose(e) {
+      console.log(e)
+      this.save(true)
       this.cancle()
     },
 
@@ -228,16 +261,15 @@ export default {
       var vue = this
       var pos3 = 0,
         pos4 = 0
+      var elm = elmnt
       elmnt.onmousedown = dragMouseDown
 
       function dragMouseDown(e) {
         e = e || window.event
         e.preventDefault()
-        // get the mouse cursor position at startup:
         pos3 = e.clientX
         pos4 = e.clientY
         document.onmouseup = closeDragElement
-        // call a function whenever the cursor moves:
         document.onmousemove =
           vue.which == 'hour' ? elementHourDrag : elementMinuteDrag
       }
@@ -245,6 +277,8 @@ export default {
       function elementHourDrag(e) {
         e = e || window.event
         e.preventDefault()
+
+        vue.removeDraggable(vue.hour.val)
 
         let center = vue.$el.querySelector('#time-picker-hour-center')
         let centerX = center.getBoundingClientRect().x
@@ -268,12 +302,19 @@ export default {
           'rotate(' + deg + 'deg)'
         vue.$el.querySelector('.time-picker-current').style.transform =
           'rotate(' + deg + 'deg)'
+
+        vue.removeSelected()
+        vue.addSelected(vue.hour.val)
+
+        if (!vue.timeButtons) vue.save(false)
       }
 
       function elementMinuteDrag(e) {
-        vue.drag = true
+        vue.didDrag = true
         e = e || window.event
         e.preventDefault()
+
+        vue.removeDraggable(vue.minute.val)
 
         let center = vue.$el.querySelector('#time-picker-hour-center')
         let centerX = center.getBoundingClientRect().x
@@ -298,12 +339,18 @@ export default {
           'rotate(' + deg + 'deg)'
         vue.$el.querySelector('.time-picker-current').style.transform =
           'rotate(' + deg + 'deg)'
+
+        vue.removeSelected()
+        vue.addSelected(vue.minute.val)
+
+        if (!vue.timeButtons) vue.save(false)
       }
 
       function closeDragElement(e) {
         e.preventDefault()
         document.onmouseup = null
         document.onmousemove = null
+        elm.onmousedown = null
         vue.dragElement(vue.$el.querySelector('p.selected'))
         if (vue.which == 'hour') vue.switchState('minute')
         return false
