@@ -1,7 +1,7 @@
 <template>
   <div class="datepicker" :class="wrapperClass">
     <datepickerinput
-      ref="input"
+      ref="pickerinput"
       :selectedValue="selectedDate"
       :format="format"
       :id="id"
@@ -18,6 +18,7 @@
       @clear="clear"
     ></datepickerinput>
     <pickday
+      ref="daypicker"
       :showDayPicker="showDay"
       :firstDate="firstDayOfView"
       :isUTC="isUTC"
@@ -31,6 +32,7 @@
     </pickday>
 
     <timepicker
+      ref="timepicker"
       :showTimePicker="showTime"
       :selectedDate="selectedDate"
       :customTimeClass="timeClass"
@@ -50,7 +52,7 @@ import Calendar from '../utils/calendar'
 import { createUtils } from '../utils/PickerUtils'
 
 export default {
-  name: 'datepicker',
+  name: 'datetimepicker',
   components: {
     Datepickerinput,
     Pickday,
@@ -96,7 +98,7 @@ export default {
       utils: utils,
       calendar: cal,
       showDay: false,
-      showTime: true,
+      showTime: false,
     }
   },
   watch: {
@@ -133,11 +135,12 @@ export default {
 
     selectDate(date) {
       this.setDate(date.timestamp)
+      if (!this.timeButtons) this.$emit('selected', this.selectedDate)
     },
 
     selectTime(date, close) {
       this.setDate(date)
-      if (this.timeButtons && close) this.$refs.input.removeInputFocus()
+      if (this.timeButtons && close) this.$refs.pickerinput.removeInputFocus()
       this.$emit('selected', this.selectedDate)
     },
 
@@ -163,8 +166,6 @@ export default {
 
     showDayPicker() {
       const d = new Date()
-      this.utils.setHours(d, 0)
-      this.utils.setMinutes(d, 0)
       this.close()
       this.selectedDate = this.selectedDate || d
       this.showDay = true
@@ -173,6 +174,7 @@ export default {
 
     showTimePicker() {
       this.close()
+      this.$refs.timepicker.setInitTime()
       this.showTime = true
       return true
     },

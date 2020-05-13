@@ -2,25 +2,28 @@
   <div id="id">
     <h1>Example of Vue.js Date Time Picker</h1>
     <div>
-      <datepicker
+      <datetimepicker
         inputClass="test"
-        :timeButtons="false"
+        :timeButtons="true"
         :editable="true"
         v-on:selected="getDate"
         v-on:cleared="getDate"
-      ></datepicker>
+      ></datetimepicker>
     </div>
-    <span id="date"></span>
+    <span
+      id="date"
+      style="position: absolute; right: 0; top: 50%; width: 50%; height: 50px;"
+    ></span>
   </div>
 </template>
 
 <script>
-import Datepicker from '../src/components/DatePicker.vue'
+import Datetimepicker from '../src/components/DateTimePicker.vue'
 
 export default {
   name: 'example',
   components: {
-    Datepicker,
+    Datetimepicker,
   },
   data() {
     return {

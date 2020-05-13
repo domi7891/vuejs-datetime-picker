@@ -89,6 +89,10 @@ import { createUtils } from '../utils/PickerUtils'
 
 const hourDegs = [30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 0]
 const minuteDegs = []
+for (let i = 6; i <= 360; i += 6) {
+  if (i == 360) minuteDegs.push(0)
+  else minuteDegs.push(i)
+}
 
 export default {
   props: {
@@ -124,10 +128,6 @@ export default {
       return hours
     },
     minutes() {
-      for (let i = 6; i <= 360; i += 6) {
-        if (i == 360) minuteDegs.push(0)
-        else minuteDegs.push(i)
-      }
       let minutes = []
       for (let i = 0; i <= 59; i++) {
         minutes.push({
@@ -162,6 +162,33 @@ export default {
     switchAP() {
       this.ampm = this.ampm == 'am' ? 'pm' : 'am'
       if (!this.timeButtons) this.save(false)
+    },
+
+    setInitTime() {
+      this.which = 'hour'
+      let hour = this.utils.getHours(this.selectedDate)
+      let minute = this.utils.getMinutes(this.selectedDate)
+
+      this.ampm = hour > 12 || hour == 0 ? 'pm' : 'am'
+
+      hour = hour == 0 ? 12 : hour > 12 ? hour - 12 : hour
+      minute == 60 ? 0 : minute
+
+      let hourDeg = hourDegs[hour - 1]
+      let minuteDeg =
+        minute == 0 ? minuteDegs[minuteDegs.length - 1] : minuteDegs[minute - 1]
+
+      let hourObj = {
+        val: hour,
+        degree: hourDeg,
+      }
+
+      this.minute = {
+        val: minute,
+        deg: minuteDeg,
+      }
+
+      this.selectHour(hourObj)
     },
 
     toCalendar() {
