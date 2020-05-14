@@ -24,11 +24,10 @@
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
-      :dateAndTime="true"
+      :dateAndTime="false"
       @monthChanged="pickerChangedView"
       @selectDate="selectDate"
       @closePicker="close"
-      @openTimePicker="showTimePicker"
       @openMonthPicker="showMonthPicker"
     >
     </pickday>
@@ -39,10 +38,9 @@
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
-      :dateAndTime="true"
+      :dateAndTime="false"
       @selectMonth="selectMonth"
       @closePicker="close"
-      @openTimePicker="showTimePicker"
       @openYearPicker="showYearPicker"
       @yearChanged="pickerChangedView"
     >
@@ -54,26 +52,12 @@
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
-      :dateAndTime="true"
+      :dateAndTime="false"
       @selectYear="selectYear"
       @closePicker="close"
-      @openTimePicker="showTimePicker"
       @decadeChanged="pickerChangedView"
     >
     </pickyear>
-
-    <timepicker
-      ref="timepicker"
-      :showTimePicker="showTime"
-      :selectedDate="selectedDate"
-      :customTimeClass="timeClass"
-      :timeButtons="timeButtons"
-      :id="pickerId"
-      :dateAndTime="true"
-      @closePicker="close"
-      @openCalendarPicker="showPicker"
-      @selectTime="selectTime"
-    ></timepicker>
   </div>
 </template>
 
@@ -82,34 +66,30 @@ import Datepickerinput from './DatePickerInput'
 import Pickday from './subcomponents/PickDay'
 import Pickmonth from './subcomponents/PickMonth'
 import Pickyear from './subcomponents/PickYear'
-import Timepicker from './subcomponents/PickTime'
 import Calendar from '../utils/calendar'
 import { createUtils } from '../utils/PickerUtils'
 
 export default {
-  name: 'datetimepicker',
+  name: 'datepicker',
   components: {
     Datepickerinput,
     Pickday,
     Pickmonth,
     Pickyear,
-    Timepicker,
   },
   props: {
     name: String,
-    format: { type: [String, Function], default: 'dd/MM/yyyy HH:mm a' },
+    format: { type: [String, Function], default: 'dd/MM/yyyy' },
     pickerId: { type: String, default: 'picker' },
     inputId: String,
     refName: String,
     placeholder: {
       type: String,
-      default: 'Pick Date-Time',
+      default: 'Pick Date',
     },
     inputClass: [String, Array, Object],
-    timeClass: [String, Array, Object],
     calendarClass: [String, Array, Object],
     wrapperClass: [String, Array, Object],
-    timeButtons: { type: Boolean, default: false },
     disabled: Boolean,
     required: Boolean,
     editable: Boolean,
@@ -138,7 +118,6 @@ export default {
       showDay: false,
       showMonth: false,
       showYear: false,
-      showTime: false,
     }
   },
   watch: {
@@ -175,7 +154,7 @@ export default {
 
     selectDate(date) {
       this.setDate(date.timestamp)
-      if (!this.timeButtons) this.$emit('selected', this.selectedDate)
+      this.$emit('selected', this.selectedDate)
     },
 
     selectMonth(month) {
@@ -190,12 +169,6 @@ export default {
       this.setFirstDate(date)
       this.$emit('changedYear', year)
       this.showMonthPicker()
-    },
-
-    selectTime(date, close) {
-      this.setDate(date)
-      if (this.timeButtons && close) this.$refs.pickerinput.removeInputFocus()
-      this.$emit('selected', this.selectedDate)
     },
 
     showPicker() {
@@ -238,13 +211,6 @@ export default {
       return true
     },
 
-    showTimePicker() {
-      this.close()
-      this.$refs.timepicker.setInitTime()
-      this.showTime = true
-      return true
-    },
-
     clear() {
       this.selectedDate = null
       this.setFirstDate()
@@ -252,7 +218,7 @@ export default {
     },
 
     close() {
-      this.showDay = this.showMonth = this.showYear = this.showTime = false
+      this.showDay = this.showMonth = this.showYear = false
       this.$emit('pickerClosed')
     },
   },

@@ -69,15 +69,15 @@
         </template>
       </div>
     </div>
-    <footer>
+    <footer v-if="dateAndTime">
       <span class="toTimePicker" v-on:click="toTimePicker"></span>
     </footer>
   </div>
 </template>
 
 <script>
-import calendar from '../utils/calendar'
-import { createUtils } from '../utils/PickerUtils'
+import calendar from '../../utils/calendar'
+import { createUtils } from '../../utils/PickerUtils'
 export default {
   props: {
     showDayPicker: Boolean,
@@ -85,6 +85,7 @@ export default {
     firstDate: Date,
     isUTC: Boolean,
     selectedDate: Date,
+    dateAndTime: Boolean,
   },
   data() {
     const utils = createUtils(this.isUTC)
