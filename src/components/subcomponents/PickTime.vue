@@ -169,7 +169,6 @@ export default {
     },
 
     setInitTime(d) {
-      this.selectedDate = d
       this.which = 'hour'
       let hour = this.utils.getHours(d == undefined ? this.selectedDate : d)
       let minute = this.utils.getMinutes(d == undefined ? this.selectedDate : d)
