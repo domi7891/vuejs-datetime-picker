@@ -1,8 +1,25 @@
 <template>
   <div id="id">
     <h1>Example of Vue.js Date Time Picker</h1>
-    <div>
+    <div style="display: flex; justify-content: space-around; width: 60%">
       <datetimepicker
+        pickerId="picker1"
+        inputClass="test"
+        :timeButtons="true"
+        :editable="true"
+        v-on:selected="getDate"
+        v-on:cleared="getDate"
+      ></datetimepicker>
+      <datetimepicker
+        pickerId="picker2"
+        inputClass="test"
+        :timeButtons="true"
+        :editable="true"
+        v-on:selected="getDate"
+        v-on:cleared="getDate"
+      ></datetimepicker>
+      <datetimepicker
+        pickerId="picker3"
         inputClass="test"
         :timeButtons="true"
         :editable="true"

@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap');
-body {
+.datepicker {
   font-family: 'Nunito', sans-serif;
 }
 
@@ -19,8 +19,7 @@ body {
   min-width: 0;
   flex-direction: column;
   vertical-align: top;
-  margin-top: 15px;
-  margin-bottom: 7.5px;
+  margin: 7.5px 0;
 
   label {
     color: rgba(0, 0, 0, 0.8);
@@ -144,6 +143,19 @@ body {
     flex-direction: column;
     background-color: black;
     color: white;
+    position: relative;
+
+    .today {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      cursor: pointer;
+      height: min-content;
+
+      svg {
+        transform: scale(0.85);
+      }
+    }
 
     .year {
       font-size: 1rem;
@@ -203,6 +215,11 @@ body {
     width: calc(100% + 1px);
   }
 
+  .calWrapper div {
+    width: 100%;
+    padding: 5px 0;
+  }
+
   .col {
     display: inline-block;
     margin: 1px;
@@ -219,6 +236,34 @@ body {
     &.cal-day {
       border-radius: 50px;
       font-size: 13px;
+      &:hover {
+        border: 1px solid white;
+      }
+    }
+
+    &.cal-month {
+      padding: 1px 5px;
+      width: calc((100% - 8px) / 4);
+      line-height: 2em;
+      height: auto;
+      border-radius: 30px;
+      font-size: 15px;
+      margin: 2px 1px;
+
+      &:hover {
+        border: 1px solid white;
+      }
+    }
+
+    &.cal-year {
+      padding: 1px 5px;
+      width: calc((100% - 8px) / 4);
+      line-height: 2em;
+      height: auto;
+      border-radius: 30px;
+      font-size: 15px;
+      margin: 2px 1px;
+
       &:hover {
         border: 1px solid white;
       }

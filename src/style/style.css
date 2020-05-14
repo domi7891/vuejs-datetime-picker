@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap");
-body {
+.datepicker {
   font-family: 'Nunito', sans-serif;
 }
 
@@ -26,8 +26,7 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
   vertical-align: top;
-  margin-top: 15px;
-  margin-bottom: 7.5px;
+  margin: 7.5px 0;
 }
 
 .datepickerinput label {
@@ -176,6 +175,22 @@ input:hover .datepickerinput .inputCon::before {
           flex-direction: column;
   background-color: black;
   color: white;
+  position: relative;
+}
+
+.calendar .info .today {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+}
+
+.calendar .info .today svg {
+  -webkit-transform: scale(0.85);
+          transform: scale(0.85);
 }
 
 .calendar .info .year {
@@ -245,6 +260,11 @@ input:hover .datepickerinput .inputCon::before {
   width: calc(100% + 1px);
 }
 
+.calendar .calWrapper div {
+  width: 100%;
+  padding: 5px 0;
+}
+
 .calendar .col {
   display: inline-block;
   margin: 1px;
@@ -265,6 +285,34 @@ input:hover .datepickerinput .inputCon::before {
 }
 
 .calendar .col.cal-day:hover {
+  border: 1px solid white;
+}
+
+.calendar .col.cal-month {
+  padding: 1px 5px;
+  width: calc((100% - 8px) / 4);
+  line-height: 2em;
+  height: auto;
+  border-radius: 30px;
+  font-size: 15px;
+  margin: 2px 1px;
+}
+
+.calendar .col.cal-month:hover {
+  border: 1px solid white;
+}
+
+.calendar .col.cal-year {
+  padding: 1px 5px;
+  width: calc((100% - 8px) / 4);
+  line-height: 2em;
+  height: auto;
+  border-radius: 30px;
+  font-size: 15px;
+  margin: 2px 1px;
+}
+
+.calendar .col.cal-year:hover {
   border: 1px solid white;
 }
 
