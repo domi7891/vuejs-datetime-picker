@@ -18,9 +18,11 @@
       @clear="clear"
     ></datepickerinput>
     <pickday
+      v-if="canShowView('day')"
       ref="daypicker"
       :showDayPicker="showDay"
       :firstDate="firstDayOfView"
+      :canShowView="canShowView"
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
@@ -33,9 +35,11 @@
     >
     </pickday>
     <pickmonth
+      v-if="canShowView('month')"
       ref="monthpicker"
       :showMonthPicker="showMonth"
       :firstDate="firstDayOfView"
+      :canShowView="canShowView"
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
@@ -48,9 +52,11 @@
     >
     </pickmonth>
     <pickyear
+      v-if="canShowView('year')"
       ref="yearpicker"
       :showYearPicker="showYear"
       :firstDate="firstDayOfView"
+      :canShowView="canShowView"
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
@@ -167,6 +173,15 @@ export default {
       this.setFirstDate(date)
     },
 
+    canShowView(view) {
+      const views = ['day', 'month', 'year']
+      const lowIndex = views.indexOf(this.lowestPicker)
+      const highIndex = views.indexOf(this.highestPicker)
+      const viewIndex = views.indexOf(view)
+
+      return viewIndex >= lowIndex && viewIndex <= highIndex
+    },
+
     setDate(date) {
       const d = new Date(date)
       this.selectedDate = d
@@ -180,16 +195,24 @@ export default {
 
     selectMonth(month) {
       const date = new Date(month.timestamp)
-      this.setFirstDate(date)
-      this.$emit('changedMonth', month)
-      this.showDayPicker()
+      if (this.canShowView('day')) {
+        this.setFirstDate(date)
+        this.$emit('changedMonth', month)
+        this.showDayPicker()
+      } else {
+        this.selectDate(month)
+      }
     },
 
     selectYear(year) {
       const date = new Date(year.timestamp)
-      this.setFirstDate(date)
-      this.$emit('changedYear', year)
-      this.showMonthPicker()
+      if (this.canShowView('month')) {
+        this.setFirstDate(date)
+        this.$emit('changedYear', year)
+        this.showMonthPicker()
+      } else {
+        this.selectDate(year)
+      }
     },
 
     selectTime(date, close) {
@@ -205,6 +228,11 @@ export default {
 
     setInitialPicker() {
       const picker = this.checkInitialPicker
+      if (!this.canShowView(picker)) {
+        throw new Error(
+          `initialView '${this.initialPicker}' cannot be rendered based on minimum '${this.lowestPicker}' and maximum '${this.highestPicker}'`
+        )
+      }
       switch (picker) {
         case 'month':
           this.showMonthPicker()
@@ -219,6 +247,9 @@ export default {
     },
 
     showDayPicker() {
+      if (!this.canShowView('day')) {
+        return false
+      }
       const d = new Date()
       this.close()
       this.selectedDate = this.selectedDate || d
@@ -227,12 +258,18 @@ export default {
     },
 
     showMonthPicker() {
+      if (!this.canShowView('month')) {
+        return false
+      }
       this.close()
       this.showMonth = true
       return true
     },
 
     showYearPicker() {
+      if (!this.canShowView('year')) {
+        return false
+      }
       this.close()
       this.showYear = true
       return true

@@ -27,7 +27,7 @@
         <span
           class="togglePickers"
           v-on:click="showMonthPicker"
-          style="cursor: pointer;"
+          v-bind:style="{ cursor: canShowView('month') ? 'pointer' : 'auto' }"
           >{{ currentMonthName }} {{ currentYearName }}</span
         >
         <span class="next" v-on:click="next"></span>
@@ -86,6 +86,7 @@ export default {
     isUTC: Boolean,
     selectedDate: Date,
     dateAndTime: Boolean,
+    canShowView: Function,
   },
   data() {
     const utils = createUtils(this.isUTC)

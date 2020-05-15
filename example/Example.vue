@@ -6,6 +6,7 @@
         inputClass="test"
         :timeButtons="true"
         :editable="true"
+        highestPicker="month"
         v-on:selected="getDate"
         v-on:cleared="getDate"
       ></datetimepicker>

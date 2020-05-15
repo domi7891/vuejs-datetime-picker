@@ -14,7 +14,7 @@
         <span
           class="togglePickers"
           v-on:click="showYearPicker"
-          style="cursor: pointer;"
+          v-bind:style="{ cursor: canShowView('year') ? 'pointer' : 'auto' }"
           >{{ currentYearName }}</span
         >
         <span class="next" v-on:click="next"></span>
@@ -44,6 +44,7 @@ export default {
     showMonthPicker: Boolean,
     customCalendarClass: [String, Object, Array],
     firstDate: Date,
+    canShowView: Function,
     isUTC: Boolean,
     selectedDate: Date,
     dateAndTime: Boolean,
