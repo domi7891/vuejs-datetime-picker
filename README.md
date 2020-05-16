@@ -27,7 +27,11 @@ npm install @domi7891/vuejs-datetime-picker
 ```
 
 ```javascript
-import { Datetimepicker, Datepicker, Timepicker } from 'vuejs-datetime-picker'
+import {
+  Datetimepicker,
+  Datepicker,
+  Timepicker,
+} from '@domi7891/vuejs-datetime-picker'
 
 export default {
   // ...
