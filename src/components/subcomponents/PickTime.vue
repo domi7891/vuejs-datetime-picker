@@ -224,6 +224,9 @@ export default {
     },
 
     selectHour(hour, d) {
+      if (d == undefined) {
+        this.$parent.$emit('changedHour', hour.val)
+      }
       this.removeDraggable(this.hour.val)
       this.hour.val = hour.val
       this.hour.deg = hour.degree
@@ -239,6 +242,8 @@ export default {
     },
 
     selectMinute(minute) {
+      this.$parent.$emit('changedMinute', minute.val)
+
       this.removeDraggable(this.hour.val)
       if (
         this.didDrag &&
@@ -387,6 +392,9 @@ export default {
 
       function closeDragElement(e) {
         e.preventDefault()
+        vue.which == 'hour'
+          ? vue.$parent.$emit('changedHour', vue.hour.val)
+          : vue.$parent.$emit('changedMinute', vue.minute.val)
         document.onmouseup = null
         document.onmousemove = null
         elm.onmousedown = null

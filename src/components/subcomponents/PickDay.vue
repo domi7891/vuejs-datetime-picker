@@ -170,7 +170,6 @@ export default {
   methods: {
     select(date) {
       this.$emit('selectDate', date)
-      // if (close) this.$emit('closePicker')
     },
 
     selectToday() {
@@ -251,7 +250,6 @@ export default {
     change(monthChange) {
       let date = this.firstDate
       this.utils.setMonth(date, this.utils.getMonth(date) + monthChange)
-      this.$emit('monthChanged', date)
     },
 
     prev() {

@@ -17,7 +17,7 @@
       @closePicker="close"
       @clear="clear"
     ></datepickerinput>
-    <timepicker
+    <picktime
       ref="timepicker"
       :showTimePicker="showTime"
       :firstTime="firstDayOfView"
@@ -28,22 +28,22 @@
       :dateAndTime="false"
       @closePicker="close"
       @selectTime="selectTime"
-    ></timepicker>
+    ></picktime>
   </div>
 </template>
 
 <script>
 import Datepickerinput from './DatePickerInput'
-import Timepicker from './subcomponents/PickTime'
+import Picktime from './subcomponents/PickTime'
 import Calendar from '../utils/calendar'
 import utils, { createUtils } from '../utils/PickerUtils'
 import '../style/style.css'
 
 export default {
-  name: 'datetimepicker',
+  name: 'timepicker',
   components: {
     Datepickerinput,
-    Timepicker,
+    Picktime,
   },
   props: {
     value: {

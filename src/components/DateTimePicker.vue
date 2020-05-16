@@ -219,6 +219,7 @@ export default {
 
     selectDate(date) {
       this.setDate(date.timestamp)
+      this.$emit('changedDay', date)
       if (!this.timeButtons) this.$emit('selected', this.selectedDate)
     },
 

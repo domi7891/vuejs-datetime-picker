@@ -4,11 +4,13 @@
     <div style="display: flex; justify-content: space-around; width: 60%">
       <datetimepicker
         value="05/02/2020 23:47"
-        inputClass="test"
-        :timeButtons="true"
+        input-class="test"
+        :time-buttons="true"
         :editable="true"
-        highestPicker="month"
-        v-on:selected="getDate"
+        highest-picker="month"
+        initial-picker="month"
+        v-on:changedDay="getDate"
+        v-on:changedMonth="changed"
         v-on:cleared="getDate"
       ></datetimepicker>
       <!-- <datetimepicker
@@ -26,8 +28,14 @@
         v-on:selected="getDate"
         v-on:cleared="getDate"
       ></datetimepicker> -->
-      <datepicker value="12 12 2020"></datepicker>
-      <timepicker :timeButtons="true" value="05:47"></timepicker>
+      <datepicker value="05-12-2020" :format="customFormatter"></datepicker>
+      <timepicker
+        :timeButtons="true"
+        value="05:47"
+        v-on:changedHour="newHour"
+        v-on:changedMinute="newHour"
+        v-on:selected="getDate"
+      ></timepicker>
     </div>
     <span
       id="date"
@@ -59,6 +67,17 @@ export default {
   methods: {
     getDate(date) {
       this.$el.querySelector('#date').innerHTML = date || ''
+    },
+    changed(date) {
+      console.log(date)
+    },
+    newHour(hour) {
+      console.log(hour)
+    },
+    customFormatter(date) {
+      return (
+        date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+      )
     },
   },
 }

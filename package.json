@@ -1,6 +1,6 @@
 {
   "name": "@domi7891/vuejs-datetime-picker",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A Vue.js date and time picker component.",
   "keywords": [
     "vue",

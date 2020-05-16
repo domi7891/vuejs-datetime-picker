@@ -198,6 +198,7 @@ export default {
 
     selectDate(date) {
       this.setDate(date.timestamp)
+      this.$emit('changedDay', date)
       this.$emit('selected', this.selectedDate)
     },
 
