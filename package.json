@@ -1,7 +1,19 @@
 {
   "name": "@domi7891/vuejs-datetime-picker",
-  "version": "0.2.9",
+  "version": "0.3.0",
+  "description": "A Vue.js date and time picker component.",
+  "keywords": [
+    "vue",
+    "datetimepicker",
+    "datepicker",
+    "timepicker",
+    "calendar",
+    "date-picker",
+    "date-time-picker",
+    "time-picker"
+  ],
   "main": "./dist/vuejs-datetime-picker.umd.min.js",
+  "unpkg": "./dist/vuejs-datetime-picker.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -15,8 +27,7 @@
     "src/*",
     "public/*",
     "*.json",
-    "*.js",
-    ".svg"
+    "*.js"
   ],
   "homepage": "https://github.com/domi7891/vuejs-datetime-picker",
   "repository": {
