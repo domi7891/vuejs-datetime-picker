@@ -137,6 +137,12 @@ const utils = {
         return year % 4 === 0 || year % 400 === 0 ? 29 : 28
     }
   },
+
+  validate(val) {
+    console.log(val)
+
+    return val == null || val instanceof Date || typeof val == 'string'
+  },
 }
 
 export const createUtils = useUTC => ({ ...utils, useUTC })

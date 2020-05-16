@@ -73,6 +73,10 @@ export default {
       this.showPicker()
     },
 
+    setFocus() {
+      this.$el.querySelector('label').classList.add('focused')
+    },
+
     unfocus() {
       const isEmpty = !this.input.value
       isEmpty ? this.$el.querySelector('label').classList.remove('focused') : ''

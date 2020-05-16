@@ -1,7 +1,7 @@
 <div align="center"><h1>Vue.js Date-Time Picker</h1>
 
 ![GitHub top language](https://img.shields.io/github/languages/top/domi7891/vuejs-datetime-picker)
-![npm](https://img.shields.io/npm/v/@domi7891/vuejs-datetime-picker)
+[![Version](https://img.shields.io/npm/v/@domi7891/vuejs-datetime-picker)](https://www.npmjs.com/package/@domi7891/vuejs-datetime-picker/v/0.3.0)
 ![GitHub last commit](https://img.shields.io/github/last-commit/domi7891/vuejs-datetime-picker)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@domi7891/vuejs-datetime-picker)
 ![npm](https://img.shields.io/npm/dw/@domi7891/vuejs-datetime-picker)
@@ -36,14 +36,6 @@ export default {
   },
   //...
 }
-```
-
-or from a CDN
-
-```html
-<div id="app">
-  <>
-</div>
 ```
 
 ## Usage

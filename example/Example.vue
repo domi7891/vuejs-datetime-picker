@@ -3,6 +3,7 @@
     <h1>Example of Vue.js Date Time Picker</h1>
     <div style="display: flex; justify-content: space-around; width: 60%">
       <datetimepicker
+        value="05/02/2020 23:47"
         inputClass="test"
         :timeButtons="true"
         :editable="true"
@@ -25,8 +26,8 @@
         v-on:selected="getDate"
         v-on:cleared="getDate"
       ></datetimepicker> -->
-      <datepicker></datepicker>
-      <timepicker :timeButtons="true"></timepicker>
+      <datepicker value="12 12 2020"></datepicker>
+      <timepicker :timeButtons="true" value="05:47"></timepicker>
     </div>
     <span
       id="date"
@@ -40,7 +41,8 @@ import {
   Datetimepicker,
   Datepicker,
   Timepicker,
-} from '../dist/vuejs-datetime-picker.umd.min.js'
+  // } from '../dist/vuejs-datetime-picker.umd.min.js'
+} from '../src/index'
 
 export default {
   name: 'example',

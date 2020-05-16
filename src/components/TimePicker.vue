@@ -36,7 +36,7 @@
 import Datepickerinput from './DatePickerInput'
 import Timepicker from './subcomponents/PickTime'
 import Calendar from '../utils/calendar'
-import { createUtils } from '../utils/PickerUtils'
+import utils, { createUtils } from '../utils/PickerUtils'
 import '../style/style.css'
 
 export default {
@@ -46,6 +46,9 @@ export default {
     Timepicker,
   },
   props: {
+    value: {
+      validator: val => utils.validate(val),
+    },
     name: String,
     format: { type: [String, Function], default: 'HH:mm a' },
     pickerId: { type: String, default: 'timePicker' },
@@ -78,12 +81,42 @@ export default {
       showTime: false,
     }
   },
+  watch: {
+    value(val) {
+      this.setValue(val)
+    },
+  },
   computed: {
     firstDayOfView() {
       return new Date(this.firstTimestamp)
     },
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    init() {
+      if (this.value) {
+        this.setValue(this.value)
+        this.$refs.pickerinput.setFocus()
+      }
+    },
+
+    setValue(val) {
+      if (typeof val === 'string') {
+        let [hours, minutes] = val.split(':')
+        let parsed = new Date()
+        parsed.setHours(hours, minutes)
+        val = isNaN(parsed.valueOf()) ? null : parsed
+      }
+      if (!val) {
+        this.setFirstDate()
+        this.selectedDate = null
+        return
+      }
+      this.selectedDate = val
+      this.setFirstDate(val)
+    },
     setFirstDate(date) {
       if (!date) {
         date = new Date()
