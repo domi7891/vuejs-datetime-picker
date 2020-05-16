@@ -36,9 +36,11 @@
 </template>
 
 <script>
-import Datetimepicker from '../src/components/DateTimePicker.vue'
-import Datepicker from '../src/components/DatePicker.vue'
-import Timepicker from '../src/components/TimePicker.vue'
+import {
+  Datetimepicker,
+  Datepicker,
+  Timepicker,
+} from '../dist/vuejs-datetime-picker.umd.min.js'
 
 export default {
   name: 'example',

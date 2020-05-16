@@ -37,6 +37,7 @@ import Datepickerinput from './DatePickerInput'
 import Timepicker from './subcomponents/PickTime'
 import Calendar from '../utils/calendar'
 import { createUtils } from '../utils/PickerUtils'
+import '../style/style.css'
 
 export default {
   name: 'datetimepicker',
@@ -112,9 +113,11 @@ export default {
 
     showTimePicker() {
       const d = new Date()
+      if (this.selectedDate == null) this.selectedDate = d
       this.close()
-      this.selectedDate = this.selectedDate || d
-      this.$refs.timepicker.setInitTime(this.selectedDate)
+      this.$refs.timepicker.setInitTime(
+        this.selectedDate == null ? d : this.selectedDate
+      )
       this.showTime = true
       return true
     },
@@ -133,6 +136,6 @@ export default {
 }
 </script>
 
-<style>
-@import '../style/style.css';
+<style lang="scss">
+// @import '../style/style.css';
 </style>

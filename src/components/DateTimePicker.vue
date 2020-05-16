@@ -296,6 +296,6 @@ export default {
 }
 </script>
 
-<style>
-@import '../style/style.css';
+<style lang="scss">
+// @import '../style/style.css';
 </style>

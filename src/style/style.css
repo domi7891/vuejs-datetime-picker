@@ -228,7 +228,7 @@ input:hover .datepickerinput .inputCon::before {
 
 .calendar header span.prev {
   cursor: pointer;
-  content: url(../img/arrowUp.svg);
+  content: url(~@/assets/arrowUp.svg);
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
   width: 10px;
@@ -237,7 +237,7 @@ input:hover .datepickerinput .inputCon::before {
 
 .calendar header span.next {
   cursor: pointer;
-  content: url(../img/arrowUp.svg);
+  content: url(~@/assets/arrowUp.svg);
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
   width: 10px;
@@ -358,11 +358,11 @@ footer .toCalendar {
 }
 
 footer .toTimePicker {
-  content: url(../img/clock.svg);
+  content: url(~@/assets/clock.svg);
 }
 
 footer .toCalendar {
-  content: url(../img/calendar.svg);
+  content: url(~@/assets/calendar.svg);
 }
 
 .timePicker {

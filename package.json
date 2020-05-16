@@ -1,34 +1,54 @@
 {
-    "name": "vuejs-datetime-picker",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint",
-        "example": "vue-cli-service serve example/main"
-    },
-    "dependencies": {
-        "core-js": "^3.6.4",
-        "eslint-config-prettier": "^6.11.0",
-        "vue": "^2.6.11",
-        "vuejs-datepicker": "^1.6.2"
-    },
-    "devDependencies": {
-        "@vue/cli-plugin-babel": "~4.3.0",
-        "@vue/cli-plugin-eslint": "~4.3.0",
-        "@vue/cli-service": "~4.3.0",
-        "@vue/eslint-config-prettier": "^6.0.0",
-        "babel-eslint": "^10.1.0",
-        "eslint": "^6.7.2",
-        "eslint-plugin-prettier": "^3.1.3",
-        "eslint-plugin-vue": "^6.2.2",
-        "prettier": "^1.19.1",
-        "vue-template-compiler": "^2.6.11"
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not dead"
-    ]
+  "name": "@domi7891/vuejs-datetime-picker",
+  "version": "0.2.9",
+  "main": "./dist/vuejs-datetime-picker.umd.min.js",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "build-bundle": "vue-cli-service build --target lib --name vuejs-datetime-picker ./src/index.js",
+    "build-test": "rm -rf ./dist && webpack --config ./webpack.config.js",
+    "lint": "vue-cli-service lint",
+    "example": "npm run lint --fix-all && vue-cli-service serve ./example/main"
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js",
+    ".svg"
+  ],
+  "homepage": "https://github.com/domi7891/vuejs-datetime-picker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domi7891/vuejs-datetime-picker"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "core-js": "^3.6.4",
+    "css-loader": "^3.5.3",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.14.1",
+    "prettier": "^1.19.1",
+    "sass-loader": "^8.0.2",
+    "style-resources-loader": "^1.3.3",
+    "svg-url-loader": "^5.0.0",
+    "vue": "^2.6.11",
+    "vue-svg-loader": "^0.16.0",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }

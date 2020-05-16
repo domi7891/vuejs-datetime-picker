@@ -1,24 +1,28 @@
-# vuejs-datetime-picker
+# Vue.js Date-Time Picker
 
-## Project setup
-```
-npm install
-```
+## Install
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+```bash
+npm install vuejs-datetime-picker
 ```
 
-### Compiles and minifies for production
-```
-npm run build
+```javascript
+import { Datetimepicker, Datepicker, Timepicker } from 'vuejs-datetime-picker'
+
+export default {
+  // ...
+  components: {
+    Datetimepicker,
+  },
+}
 ```
 
 ### Lints and fixes files
+
 ```
 npm run lint
 ```
 
 ### Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).

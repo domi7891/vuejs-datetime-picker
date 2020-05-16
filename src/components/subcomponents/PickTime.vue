@@ -169,6 +169,7 @@ export default {
     },
 
     setInitTime(d) {
+      // if (this.selectedDate == null) this.selectedDate = d
       this.which = 'hour'
       let hour = this.utils.getHours(d == undefined ? this.selectedDate : d)
       let minute = this.utils.getMinutes(d == undefined ? this.selectedDate : d)
@@ -192,7 +193,7 @@ export default {
         deg: minuteDeg,
       }
 
-      this.selectHour(hourObj)
+      this.selectHour(hourObj, d)
     },
 
     toCalendar() {
@@ -222,7 +223,7 @@ export default {
         .classList.add('selected')
     },
 
-    selectHour(hour) {
+    selectHour(hour, d) {
       this.removeDraggable(this.hour.val)
       this.hour.val = hour.val
       this.hour.deg = hour.degree
@@ -233,7 +234,7 @@ export default {
       this.removeSelected()
       this.addSelected(hour.val)
       this.dragElement(document.querySelector('#' + this.id + ' p.selected'))
-      if (!this.timeButtons) this.save(false)
+      if (!this.timeButtons) this.save(false, d)
       return true
     },
 
@@ -275,12 +276,15 @@ export default {
       this.$el.querySelector('#' + this.id + ' p.selected').style.pointerEvent =
         'auto'
     },
-    save(close) {
+    save(close, d) {
       let newHours = this.ampm == 'pm' ? this.hour.val + 12 : this.hour.val
       newHours = newHours == 24 ? 0 : newHours
-      this.utils.setHours(this.selectedDate, newHours)
-      this.utils.setMinutes(this.selectedDate, this.minute.val)
-      this.$emit('selectTime', this.selectedDate, close)
+      this.utils.setHours(d == undefined ? this.selectedDate : d, newHours)
+      this.utils.setMinutes(
+        d == undefined ? this.selectedDate : d,
+        this.minute.val
+      )
+      this.$emit('selectTime', d == undefined ? this.selectedDate : d, close)
     },
 
     saveAndClose() {
