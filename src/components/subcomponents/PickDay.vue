@@ -250,6 +250,7 @@ export default {
     change(monthChange) {
       let date = this.firstDate
       this.utils.setMonth(date, this.utils.getMonth(date) + monthChange)
+      this.$emit('monthChanged', date)
     },
 
     prev() {
