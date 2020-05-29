@@ -1,56 +1,55 @@
 <template>
-  <div id="id">
-    <h1>Example of Vue.js Date Time Picker</h1>
-    <div style="display: flex; justify-content: space-around; width: 60%">
-      <datetimepicker
-        value="05/02/2020 23:47"
-        input-class="test"
-        :time-buttons="true"
-        :editable="true"
-        highest-picker="month"
-        initial-picker="month"
-        v-on:changedDay="getDate"
-        v-on:changedMonth="changed"
-        v-on:cleared="getDate"
-      ></datetimepicker>
-      <!-- <datetimepicker
-        inputClass="test"
-        :timeButtons="true"
-        :editable="true"
-        v-on:selected="getDate"
-        v-on:cleared="getDate"
-      ></datetimepicker> -->
-      <!-- <datetimepicker
-        pickerId="picker3"
-        inputClass="test"
-        :timeButtons="true"
-        :editable="true"
-        v-on:selected="getDate"
-        v-on:cleared="getDate"
-      ></datetimepicker> -->
-      <datepicker value="05-12-2020" :format="customFormatter"></datepicker>
-      <timepicker
-        :timeButtons="true"
-        value="05:47"
-        v-on:changedHour="newHour"
-        v-on:changedMinute="newHour"
-        v-on:selected="getDate"
-      ></timepicker>
+  <div id="id" class="w-70">
+    <h1>Example of Vue.js Date-Time Picker</h1>
+    <div class="row dflex just-spbt w-90">
+      <div class="column">
+        <h3>Default DateTimePicker</h3>
+        <datetimepicker></datetimepicker>
+      </div>
+      <div class="column">
+        <h3>Default DatePicker</h3>
+        <datepicker></datepicker>
+      </div>
+      <div class="column">
+        <h3>Default TimePicker</h3>
+        <timepicker></timepicker>
+      </div>
     </div>
-    <span
-      id="date"
-      style="position: absolute; right: 0; top: 50%; width: 50%; height: 50px;"
-    ></span>
+
+    <div class="row-wrapper dflex just-spbt w-95">
+      <div class="row dflex just-spbt float-l">
+        <div class="column">
+          <h3>Start Value:</h3>
+          <datetimepicker
+            :value="new Date()"
+            :disableDates="{
+              years: {
+                function: date => {
+                  if (date.getFullYear() % 7 == 0) return true
+                },
+              },
+            }"
+          ></datetimepicker>
+        </div>
+      </div>
+      <div class="row dflex just-spbt float-l">
+        <div class="column">
+          <h3>Start Value:</h3>
+          <datetimepicker :value="new Date()"></datetimepicker>
+        </div>
+      </div>
+      <div class="row dflex just-spbt float-l">
+        <div class="column">
+          <h3>Start Value:</h3>
+          <datetimepicker :value="new Date()"></datetimepicker>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import {
-  Datetimepicker,
-  Datepicker,
-  Timepicker,
-  // } from '../dist/vuejs-datetime-picker.umd.min.js'
-} from '../src/index'
+import { Datetimepicker, Datepicker, Timepicker } from '../src/index'
 
 export default {
   name: 'example',
@@ -83,4 +82,6 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+@import './example.scss';
+</style>

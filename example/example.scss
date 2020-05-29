@@ -1,0 +1,86 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+}
+
+#id {
+  padding: 5px 50px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+
+  h1 {
+    margin-bottom: 30px;
+  }
+
+  .row {
+    margin: 10px 0;
+    text-align: start;
+    padding: 25px;
+    border: 0.5px solid #cccccc;
+    border-radius: 15px;
+
+    .column {
+    }
+  }
+
+  .row-wrapper {
+    padding: 25px;
+  }
+
+  .dflex {
+    display: flex;
+  }
+
+  .just-spar {
+    justify-content: space-around;
+  }
+
+  .just-spbt {
+    justify-content: space-between;
+  }
+
+  .float-l {
+    float: left;
+  }
+
+  .mr-2 {
+    margin-right: 10px;
+  }
+
+  .ml- {
+    margin-left: 10px;
+  }
+  code {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: rgb(180, 180, 180);
+  }
+}
+
+@mixin w-x {
+  @for $i from 0 through 100 {
+    @if $i % 5 == 0 {
+      .w-#{$i} {
+        width: $i * 1%;
+      }
+    }
+  }
+}
+
+@include w-x;

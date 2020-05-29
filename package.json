@@ -18,9 +18,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-bundle": "vue-cli-service build --target lib --name vuejs-datetime-picker ./src/index.js",
-    "build-test": "rm -rf ./dist && webpack --config ./webpack.config.js",
     "lint": "vue-cli-service lint",
-    "example": "npm run lint --fix-all && vue-cli-service serve ./example/main"
+    "example": "vue-cli-service serve ./example/main"
   },
   "files": [
     "dist/*",

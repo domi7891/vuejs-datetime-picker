@@ -25,6 +25,9 @@
       :canShowView="canShowView"
       :isUTC="isUTC"
       :selectedDate="selectedDate"
+      :disableDays="
+        disableDates ? (disableDates.days ? disableDates.days : null) : null
+      "
       :customCalendarClass="calendarClass"
       :dateAndTime="true"
       @monthChanged="pickerChangedView"
@@ -43,6 +46,9 @@
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
+      :disableMonths="
+        disableDates ? (disableDates.months ? disableDates.months : null) : null
+      "
       :dateAndTime="true"
       @selectMonth="selectMonth"
       @closePicker="close"
@@ -60,6 +66,9 @@
       :isUTC="isUTC"
       :selectedDate="selectedDate"
       :customCalendarClass="calendarClass"
+      :disableYears="
+        disableDates ? (disableDates.years ? disableDates.years : null) : null
+      "
       :dateAndTime="true"
       @selectYear="selectYear"
       @closePicker="close"
@@ -114,6 +123,7 @@ export default {
       type: String,
       default: 'Pick Date-Time',
     },
+    disableDates: Object,
     inputClass: [String, Array, Object],
     timeClass: [String, Array, Object],
     calendarClass: [String, Array, Object],

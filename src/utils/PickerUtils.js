@@ -139,8 +139,6 @@ const utils = {
   },
 
   validate(val) {
-    console.log(val)
-
     return val == null || val instanceof Date || typeof val == 'string'
   },
 }
